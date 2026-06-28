@@ -86,8 +86,13 @@ export default function Inbox() {
               className={`rc-inbox__thread${selected?.id === inquiry.id ? ' active' : ''}`}
               onClick={() => loadMessages(inquiry)}
             >
-              <span className="rc-inbox__thread-title">
-                {inquiry.listing_title || `Listing #${inquiry.listing_id}`}
+              <span className="rc-inbox__thread-info">
+                <span className="rc-inbox__thread-title">
+                  {inquiry.listing_title || `Listing #${inquiry.listing_id}`}
+                </span>
+                <span className="rc-inbox__thread-participant">
+                  {inquiry.other_participant_name || 'Unknown'}
+                </span>
               </span>
               <span className="rc-muted">{inquiry.status}</span>
             </button>

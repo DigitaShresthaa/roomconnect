@@ -80,7 +80,6 @@ export default function Home() {
     <div className="rc-home">
       <section className="rc-hero">
         <div className="rc-hero__content">
-          <Badge tone="accent">RoomConnect</Badge>
           <h1>Find and list rental rooms with less friction.</h1>
           <p>
             A structured marketplace for Nepal rental rooms. Browse verified listings,
@@ -151,17 +150,6 @@ export default function Home() {
               </div>
             </form>
           </Card>
-          {!user ? (
-            <Card className="rc-panel-card">
-              <h3>Post a listing</h3>
-              <p>Share availability, media, pricing, and rules in minutes.</p>
-              <Link to={listLink}>
-                <Button variant="ghost" size="sm">
-                  Start listing
-                </Button>
-              </Link>
-            </Card>
-          ) : null}
         </div>
       </section>
 

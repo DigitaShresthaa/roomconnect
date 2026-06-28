@@ -9,6 +9,7 @@ class InquiryOut(BaseModel):
     listing_title: str | None = None
     seeker_id: int
     owner_id: int
+    other_participant_name: str | None = None
     status: str
     created_at: datetime
 

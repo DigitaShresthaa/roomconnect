@@ -1098,12 +1098,29 @@ p {
   background: #fff;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   cursor: pointer;
+  width: 100%;
+}
+
+.rc-inbox__thread-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .rc-inbox__thread-title {
   font-weight: 600;
   color: var(--slate-900);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rc-inbox__thread-participant {
+  font-size: 0.82rem;
+  color: var(--slate-500);
 }
 
 .rc-inbox__thread.active {
@@ -1688,4 +1705,14 @@ p {
 .rc-link:hover {
   color: var(--green-900);
   text-decoration: underline;
+}
+
+.rc-save-notice {
+  text-align: center;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--sand-100);
+  color: var(--slate-700);
+  font-size: 0.9rem;
+  font-weight: 500;
 }

@@ -276,8 +276,8 @@ export default function Listings() {
             saved={savedIds.includes(listing.id)}
           />
         ))}
-        {saveNotice ? <p className="rc-muted" role="status">{saveNotice}</p> : null}
       </div>
+      {saveNotice ? <p className="rc-save-notice" role="status">{saveNotice}</p> : null}
       <div className="rc-pagination">
         <Button size="sm" variant="secondary" onClick={() => gotoPage(page - 1)} disabled={page === 1}>
           Previous

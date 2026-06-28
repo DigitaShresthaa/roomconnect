@@ -57,6 +57,9 @@ def list_inquiries(
     inquiries: list[Inquiry] = []
     for inquiry, listing_title in rows:
         setattr(inquiry, "listing_title", listing_title)
+        other_id = inquiry.seeker_id if current_user.role == UserRole.owner else inquiry.owner_id
+        other = db.get(User, other_id)
+        setattr(inquiry, "other_participant_name", other.full_name if other else None)
         inquiries.append(inquiry)
     return inquiries
 
