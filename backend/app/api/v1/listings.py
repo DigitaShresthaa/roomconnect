@@ -7,6 +7,7 @@ from app.core.audit import record_audit
 from app.core.deps import get_current_user, get_current_user_optional, get_db, require_role
 from app.core.media import delete_file, delete_listing_dir, save_upload_file
 from app.models.listing import Listing, ListingMedia, MediaType
+from app.models.reference import Locality
 from app.models.review import UserReview
 from app.models.user import User, UserRole
 from app.schemas.listing import (
@@ -129,6 +130,51 @@ def list_listings(
     _attach_cover_images(db, listings)
     _attach_owner_ratings(db, listings)
     return JSONResponse(content=[_listing_payload(listing) for listing in listings])
+
+
+@router.get("/recommended", response_model=list[ListingOut])
+def recommended_listings(
+    db: Session = Depends(get_db),
+    locality_id: int | None = None,
+) -> list[ListingOut]:
+    limit = 4
+    if locality_id:
+        locality = db.get(Locality, locality_id)
+        if locality:
+            listings = list(
+                db.execute(
+                    select(Listing)
+                    .where(
+                        Listing.is_hidden == False,
+                        Listing.is_available == True,
+                        Listing.locality_id == locality_id,
+                    )
+                    .order_by(Listing.created_at.desc())
+                    .limit(limit)
+                ).scalars()
+            )
+            if listings:
+                _attach_cover_images(db, listings)
+                _attach_owner_ratings(db, listings)
+                return JSONResponse(content=[_listing_payload(l) for l in listings])
+
+            listings = list(
+                db.execute(
+                    select(Listing)
+                    .where(
+                        Listing.is_hidden == False,
+                        Listing.is_available == True,
+                        Listing.district_id == locality.district_id,
+                    )
+                    .order_by(Listing.created_at.desc())
+                    .limit(limit)
+                ).scalars()
+            )
+            _attach_cover_images(db, listings)
+            _attach_owner_ratings(db, listings)
+            return JSONResponse(content=[_listing_payload(l) for l in listings])
+
+    return JSONResponse(content=[])
 
 
 @router.get("/admin/all", response_model=list[ListingOut])

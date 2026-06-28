@@ -1,7 +1,7 @@
 import enum
 from datetime import datetime
 
-from sqlalchemy import Boolean, Column, DateTime, Enum, BigInteger, String
+from sqlalchemy import Boolean, Column, DateTime, Enum, BigInteger, ForeignKey, String
 from sqlalchemy.sql import func
 
 from app.db.session import Base
@@ -22,6 +22,8 @@ class User(Base):
     email = Column(String(254), nullable=False, unique=True)
     phone = Column(String(32), nullable=False, unique=True)
     password_hash = Column(String(255), nullable=False)
+
+    locality_id = Column(BigInteger, ForeignKey("localities.id"), nullable=True)
 
     is_verified = Column(Boolean, nullable=False, default=False)
     is_active = Column(Boolean, nullable=False, default=True)

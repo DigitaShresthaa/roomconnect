@@ -39,6 +39,7 @@ def register(payload: UserCreate, db: Session = Depends(get_db)) -> UserPublic:
         email=payload.email,
         phone=payload.phone,
         password_hash=hash_password(payload.password),
+        locality_id=payload.locality_id,
         is_verified=False,
         is_active=True,
     )
@@ -133,6 +134,8 @@ def update_me(
 
     current_user.full_name = payload.full_name
     current_user.role = UserRole(payload.role)
+    if payload.locality_id is not None:
+        current_user.locality_id = payload.locality_id
     db.commit()
     db.refresh(current_user)
     return current_user

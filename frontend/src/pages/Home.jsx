@@ -1,11 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import Input from '../components/ui/Input'
+import ListingCard from '../components/listings/ListingCard'
 import OnboardingTips from '../components/ui/OnboardingTips'
+import { useAuth } from '../contexts/AuthContext'
+import { apiGet } from '../lib/api'
 
 const stats = [
   { label: 'Listings ready', value: '1.2k+' },
@@ -34,7 +37,22 @@ const highlights = [
 
 export default function Home() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [search, setSearch] = useState({ keyword: '', min_price: '', max_price: '' })
+  const [recommended, setRecommended] = useState(null)
+  const [recommendedLoading, setRecommendedLoading] = useState(false)
+
+  useEffect(() => {
+    if (user?.role === 'seeker' && user?.locality_id) {
+      setRecommendedLoading(true)
+      apiGet(`/api/v1/listings/recommended?locality_id=${user.locality_id}`)
+        .then(setRecommended)
+        .catch(() => setRecommended([]))
+        .finally(() => setRecommendedLoading(false))
+    } else {
+      setRecommended(null)
+    }
+  }, [user])
 
   const handleSearchSubmit = (event) => {
     event.preventDefault()
@@ -68,22 +86,26 @@ export default function Home() {
             A structured marketplace for Nepal rental rooms. Browse verified listings,
             shortlist what fits, and manage conversations in one place.
           </p>
-          <div className="rc-hero__actions">
-            <Link to={browseLink}>
-              <Button>Browse listings</Button>
-            </Link>
-            <Link to={listLink}>
-              <Button variant="secondary">List your room</Button>
-            </Link>
-          </div>
-          <div className="rc-hero__stats">
-            {stats.map((stat) => (
-              <div key={stat.label} className="rc-stat">
-                <p className="rc-stat__value">{stat.value}</p>
-                <p className="rc-stat__label">{stat.label}</p>
-              </div>
-            ))}
-          </div>
+          {!user ? (
+            <div className="rc-hero__actions">
+              <Link to={browseLink}>
+                <Button>Browse listings</Button>
+              </Link>
+              <Link to={listLink}>
+                <Button variant="secondary">List your room</Button>
+              </Link>
+            </div>
+          ) : null}
+          {!user ? (
+            <div className="rc-hero__stats">
+              {stats.map((stat) => (
+                <div key={stat.label} className="rc-stat">
+                  <p className="rc-stat__value">{stat.value}</p>
+                  <p className="rc-stat__label">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
         </div>
         <div className="rc-hero__panel">
           <Card className="rc-panel-card">
@@ -129,39 +151,72 @@ export default function Home() {
               </div>
             </form>
           </Card>
-          <Card className="rc-panel-card">
-            <h3>Post a listing</h3>
-            <p>Share availability, media, pricing, and rules in minutes.</p>
-            <Link to={listLink}>
-              <Button variant="ghost" size="sm">
-                Start listing
-              </Button>
-            </Link>
-          </Card>
+          {!user ? (
+            <Card className="rc-panel-card">
+              <h3>Post a listing</h3>
+              <p>Share availability, media, pricing, and rules in minutes.</p>
+              <Link to={listLink}>
+                <Button variant="ghost" size="sm">
+                  Start listing
+                </Button>
+              </Link>
+            </Card>
+          ) : null}
         </div>
       </section>
 
+      {recommended !== null && recommended.length > 0 ? (
+        <section>
+          <div className="rc-section-header">
+            <h2>Recommended for you</h2>
+            <Link to="/listings" className="rc-link">View all &rarr;</Link>
+          </div>
+          <div className="rc-listing-grid">
+            {recommended.map((listing) => (
+              <ListingCard
+                key={listing.id}
+                listing={listing}
+                onView={() => navigate(`/listings/${listing.id}`)}
+              />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {recommendedLoading ? (
+        <section>
+          <div className="rc-section-header">
+            <h2>Recommended for you</h2>
+          </div>
+          <p className="rc-muted">Loading recommendations…</p>
+        </section>
+      ) : null}
+
       <OnboardingTips />
 
-      <section className="rc-grid">
-        {highlights.map((item) => (
-          <Card key={item.title}>
-            <h3>{item.title}</h3>
-            <p>{item.detail}</p>
-          </Card>
-        ))}
-      </section>
+      {!user ? (
+        <section className="rc-grid">
+          {highlights.map((item) => (
+            <Card key={item.title}>
+              <h3>{item.title}</h3>
+              <p>{item.detail}</p>
+            </Card>
+          ))}
+        </section>
+      ) : null}
 
-      <section className="rc-home__links">
-        <Card>
-          <h3>Quick links</h3>
-          <div className="rc-home__link-row">
-            <Link className="rc-home__link" to={browseLink}>Browse listings</Link>
-            <Link className="rc-home__link" to="/auth/register">Create account</Link>
-            <Link className="rc-home__link" to="/auth/login">Sign in</Link>
-          </div>
-        </Card>
-      </section>
+      {!user ? (
+        <section className="rc-home__links">
+          <Card>
+            <h3>Quick links</h3>
+            <div className="rc-home__link-row">
+              <Link className="rc-home__link" to={browseLink}>Browse listings</Link>
+              <Link className="rc-home__link" to="/auth/register">Create account</Link>
+              <Link className="rc-home__link" to="/auth/login">Sign in</Link>
+            </div>
+          </Card>
+        </section>
+      ) : null}
     </div>
   )
 }

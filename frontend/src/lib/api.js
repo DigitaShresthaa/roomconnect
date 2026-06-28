@@ -11,14 +11,23 @@ function getAuthHeader() {
 
 async function request(path, options = {}) {
   const isFormData = options.body instanceof FormData
-  const response = await fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers: {
-      ...(isFormData ? {} : DEFAULT_HEADERS),
-      ...(options.auth ? getAuthHeader() : {}),
-      ...(options.headers || {}),
-    },
-  })
+  let response
+  try {
+    response = await fetch(`${BASE_URL}${path}`, {
+      ...options,
+      headers: {
+        ...(isFormData ? {} : DEFAULT_HEADERS),
+        ...(options.auth ? getAuthHeader() : {}),
+        ...(options.headers || {}),
+      },
+    })
+  } catch (err) {
+    const networkErr = new Error(
+      `Unable to reach the server. Please check that the backend is running at ${BASE_URL} and try again.`
+    )
+    networkErr.payload = null
+    throw networkErr
+  }
 
   if (response.status === 204) {
     return null
@@ -30,10 +39,14 @@ async function request(path, options = {}) {
   const payload = isJson ? await response.json() : await response.text()
 
   if (!response.ok) {
-    const message = payload?.error?.message || payload?.message || 'Request failed'
+    let message
+    if (typeof payload === 'string') {
+      message = payload || `Request failed (${response.status})`
+    } else {
+      message = payload?.detail || payload?.error?.message || payload?.message || `Request failed (${response.status})`
+    }
     const err = new Error(message)
-    // Attach the parsed payload for callers to inspect field-level errors
-    // (e.g. Pydantic/FASTAPI validation detail)
+    err.status = response.status
     try {
       err.payload = payload
     } catch (e) {

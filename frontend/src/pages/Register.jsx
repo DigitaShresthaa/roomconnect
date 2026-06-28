@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import Input from '../components/ui/Input'
 import Select from '../components/ui/Select'
-import { apiPost } from '../lib/api'
+import { apiGet, apiPost } from '../lib/api'
 
 export default function Register() {
   const navigate = useNavigate()
@@ -15,14 +15,45 @@ export default function Register() {
     phone: '',
     password: '',
     role: 'seeker',
+    locality_id: '',
   })
   const [status, setStatus] = useState({ loading: false, error: '', success: '' })
   const [errors, setErrors] = useState({})
+  const [provinces, setProvinces] = useState([])
+  const [districts, setDistricts] = useState([])
+  const [localities, setLocalities] = useState([])
+  const [selectedProvinceId, setSelectedProvinceId] = useState('')
+  const [selectedDistrictId, setSelectedDistrictId] = useState('')
+
+  useEffect(() => {
+    apiGet('/api/v1/reference/public/provinces')
+      .then(setProvinces)
+      .catch(() => setProvinces([]))
+  }, [])
+
+  useEffect(() => {
+    setSelectedDistrictId('')
+    setDistricts([])
+    setLocalities([])
+    setForm((prev) => ({ ...prev, locality_id: '' }))
+    if (!selectedProvinceId) return
+    apiGet(`/api/v1/reference/public/districts?province_id=${selectedProvinceId}`)
+      .then(setDistricts)
+      .catch(() => setDistricts([]))
+  }, [selectedProvinceId])
+
+  useEffect(() => {
+    setLocalities([])
+    setForm((prev) => ({ ...prev, locality_id: '' }))
+    if (!selectedDistrictId) return
+    apiGet(`/api/v1/reference/public/localities?district_id=${selectedDistrictId}`)
+      .then(setLocalities)
+      .catch(() => setLocalities([]))
+  }, [selectedDistrictId])
 
   const handleChange = (event) => {
     const { name, value } = event.target
     setForm((prev) => ({ ...prev, [name]: value }))
-    // clear field error as user edits
     setErrors((prev) => {
       if (!prev[name]) return prev
       const next = { ...prev }
@@ -31,12 +62,23 @@ export default function Register() {
     })
   }
 
+  const handleProvinceChange = (event) => {
+    setSelectedProvinceId(event.target.value)
+  }
+
+  const handleDistrictChange = (event) => {
+    setSelectedDistrictId(event.target.value)
+  }
+
+  const handleLocalityChange = (event) => {
+    setForm((prev) => ({ ...prev, locality_id: event.target.value }))
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     setStatus({ loading: true, error: '', success: '' })
     setErrors({})
 
-    // client-side validation
     const nextErrors = {}
     const nameVal = form.full_name?.trim() || ''
     if (!nameVal) {
@@ -64,17 +106,19 @@ export default function Register() {
       setErrors(nextErrors)
       return
     }
+    const payload = {
+      ...form,
+      locality_id: form.locality_id ? Number(form.locality_id) : null,
+    }
     try {
-      await apiPost('/api/v1/auth/register', form)
+      await apiPost('/api/v1/auth/register', payload)
       setStatus({ loading: false, error: '', success: 'Account created. Check email to verify.' })
       navigate('/auth/login')
     } catch (error) {
       setStatus((s) => ({ ...s, loading: false }))
-      // If the API attached a parsed payload with field errors (FastAPI/Pydantic), map them
       if (error.payload && Array.isArray(error.payload.detail)) {
         const fieldErrors = {}
         error.payload.detail.forEach((item) => {
-          // item.loc may be ['body','field'] or similar
           const loc = item.loc || []
           const field = loc.length > 0 ? loc[loc.length - 1] : null
           if (field && typeof field === 'string') {
@@ -86,8 +130,6 @@ export default function Register() {
           return
         }
       }
-
-      // Heuristic: assign common messages to fields
       const msg = error.message || ''
       if (/email/i.test(msg)) {
         setErrors({ email: msg })
@@ -97,7 +139,6 @@ export default function Register() {
         setErrors({ phone: msg })
         return
       }
-
       setStatus({ loading: false, error: msg, success: '' })
     }
   }
@@ -145,6 +186,24 @@ export default function Register() {
           <Select label="Role" name="role" value={form.role} onChange={handleChange}>
             <option value="seeker">Room seeker</option>
             <option value="owner">Property owner</option>
+          </Select>
+          <Select label="Province" name="province" value={selectedProvinceId} onChange={handleProvinceChange}>
+            <option value="">-- Select province --</option>
+            {provinces.map((p) => (
+              <option key={p.id} value={p.id}>{p.name}</option>
+            ))}
+          </Select>
+          <Select label="District" name="district" value={selectedDistrictId} onChange={handleDistrictChange} disabled={!selectedProvinceId}>
+            <option value="">-- Select district --</option>
+            {districts.map((d) => (
+              <option key={d.id} value={d.id}>{d.name}</option>
+            ))}
+          </Select>
+          <Select label="Locality" name="locality_id" value={form.locality_id} onChange={handleLocalityChange} disabled={!selectedDistrictId}>
+            <option value="">-- Select locality --</option>
+            {localities.map((l) => (
+              <option key={l.id} value={l.id}>{l.name}</option>
+            ))}
           </Select>
           {status.error ? <p className="rc-error">{status.error}</p> : null}
           {status.success ? <p className="rc-success">{status.success}</p> : null}

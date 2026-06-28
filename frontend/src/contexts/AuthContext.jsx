@@ -26,7 +26,11 @@ export function AuthProvider({ children }) {
     if (!token) return
     apiGetAuth('/api/v1/auth/me')
       .then((profile) => setUser(profile))
-      .catch(() => logout())
+      .catch((err) => {
+        if (err.status === 401) {
+          logout()
+        }
+      })
   }, [token])
 
   const value = useMemo(

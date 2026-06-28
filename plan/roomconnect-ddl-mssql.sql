@@ -13,6 +13,7 @@ CREATE TABLE dbo.users (
     email NVARCHAR(254) NOT NULL,
     phone NVARCHAR(32) NOT NULL,
     password_hash NVARCHAR(255) NOT NULL,
+    location_id BIGINT NULL,
     is_verified BIT NOT NULL CONSTRAINT df_users_is_verified DEFAULT (0),
     is_active BIT NOT NULL CONSTRAINT df_users_is_active DEFAULT (1),
     last_login_at DATETIME2(0) NULL,
@@ -21,7 +22,8 @@ CREATE TABLE dbo.users (
     CONSTRAINT pk_users PRIMARY KEY CLUSTERED (id),
     CONSTRAINT uq_users_email UNIQUE (email),
     CONSTRAINT uq_users_phone UNIQUE (phone),
-    CONSTRAINT ck_users_role CHECK (role IN (N'admin', N'owner', N'seeker'))
+    CONSTRAINT ck_users_role CHECK (role IN (N'admin', N'owner', N'seeker')),
+    CONSTRAINT fk_users_location FOREIGN KEY (location_id) REFERENCES dbo.localities (id) ON DELETE SET NULL ON UPDATE NULL
 );
 GO
 

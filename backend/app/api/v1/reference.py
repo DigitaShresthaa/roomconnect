@@ -57,6 +57,17 @@ def public_localities(
     return list(db.execute(statement.order_by(Locality.name)).scalars())
 
 
+@router.get("/public/localities/{locality_id}", response_model=LocalityOut)
+def public_locality_detail(
+    locality_id: int,
+    db: Session = Depends(get_db),
+) -> LocalityOut:
+    locality = db.get(Locality, locality_id)
+    if not locality:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Locality not found")
+    return locality
+
+
 @router.get("/categories", response_model=list[ReferenceOut], dependencies=[admin_only])
 def list_categories(db: Session = Depends(get_db)) -> list[ReferenceOut]:
     return list(db.execute(select(Category).order_by(Category.name)).scalars())

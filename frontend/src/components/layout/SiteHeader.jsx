@@ -7,6 +7,7 @@ export default function SiteHeader() {
   const { isAuthenticated, user, logout } = useAuth()
   const isAdmin = user?.role === 'admin'
   const profileLabel = user?.full_name?.trim() || 'Profile'
+  const initial = user?.full_name?.charAt(0)?.toUpperCase() || '?'
 
   return (
     <header className="rc-header">
@@ -28,14 +29,25 @@ export default function SiteHeader() {
             Home
           </NavLink>
         ) : null}
-        <NavLink
-          to="/listings"
-          className={({ isActive }) =>
-            `rc-nav-link${isActive ? ' active' : ''}`
-          }
-        >
-          Listings
-        </NavLink>
+        {user?.role === 'seeker' ? (
+          <NavLink
+            to="/listings"
+            className={({ isActive }) =>
+              `rc-nav-link rc-nav-link--seeker${isActive ? ' active' : ''}`
+            }
+          >
+            Listings
+          </NavLink>
+        ) : (
+          <NavLink
+            to="/listings"
+            className={({ isActive }) =>
+              `rc-nav-link${isActive ? ' active' : ''}`
+            }
+          >
+            Listings
+          </NavLink>
+        )}
         {isAuthenticated ? (
           <>
             {user?.role !== 'admin' ? (
@@ -64,13 +76,14 @@ export default function SiteHeader() {
                 `rc-nav-link${isActive ? ' active' : ''}`
               }
             >
+              <span className="rc-nav-avatar">{initial}</span>
               {profileLabel}
             </NavLink>
             {user?.role === 'owner' ? (
               <NavLink
                 to="/owner/listings"
                 className={({ isActive }) =>
-                  `rc-nav-link${isActive ? ' active' : ''}`
+                  `rc-nav-link rc-nav-link--owner${isActive ? ' active' : ''}`
                 }
               >
                 My listings
@@ -86,9 +99,9 @@ export default function SiteHeader() {
                 Admin panel
               </NavLink>
             ) : null}
-            <Button variant="ghost" size="sm" onClick={logout}>
+            <button className="rc-nav-link rc-nav-link--logout" onClick={logout}>
               Log out
-            </Button>
+            </button>
           </>
         ) : (
           <>
