@@ -1,0 +1,10 @@
+{
+  "categories": ["Room", "Flat"],
+  "provinces": ["Bagmati"],
+  "districts": [
+    {"name": "Kathmandu", "province_name": "Bagmati"}
+  ],
+  "localities": [
+    {"name": "Baneshwor", "district_name": "Kathmandu", "province_name": "Bagmati"}
+  ]
+}

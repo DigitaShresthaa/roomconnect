@@ -1,0 +1,75 @@
+Chapter 1: Introduction
+1.1	Background to the project
+The demand for rental accommodation has seen a rapid increase worldwide, particularly in urban cities, as a result of rapid urbanization and increased migration to cities for educational and employment opportunities (Dsilva, 2025). Majority of urban cities of Nepal such as Kathmandu have also seen significant growth of demand for rentals rooms and shared living spaces every year and yet finding rental rooms and tenants is largely informal and inefficient. People in Nepal still heavily relies on unofficial channels like printed notices on walls and electrical poles, newspaper ads, local shopkeepers, brokers and social media pages when looking for rentals. These inefficient approaches leave the room seekers deeply dissatisfied and frustrated as they lack proper structure and information and so do property owners, that face similar challenges in finding a trustworthy occupant (Maalsen et al., 2021). Even though there are some general online listing sites, none of them are specifically made or optimized to meet the unique problem faced by the two critical users (property owner and rook seekers) of Nepal’s rental market. Digitization of rental platforms is also very necessary in today’s context, as everything is becoming digital. The absence of centralized digital rental platform is felt in every nook and corner of Nepal that has led to the lack of transparency and trust between the property owners and room seekers (Kholodilin, 2024). 
+The proposed project is proposed as a digital solution that aims to bridge this gap and make the process of listing and searching for rental properties more accessible and consistent by providing a central user-friendly platform. This platform will directly impact on the reduction of the need for informal channels and make the experience of rental better. This platform also aligns with SDG goal 11 “Sustainable Cities and Communities” which aims to make communities more inclusive by focusing on affordable and managed housings. 
+1.2	Problem Context
+The project’s main goal is to solve the problem of lacking a well-organized, transparent, accessible and a dependable digital marketplace for rental services platform in Nepal. The capital city of Nepal and its surrounding cities have witnessed or drastic rise in internal migration in the last few decades. Rural to capital migration, migration of college/university, migration of young professionals to find jobs, and families who migrate in search of improved social service and infrastructure (Khanal, 2025). This trend has created an incredible load on urban areas’ rental housing market where the demand is increasing at a very high rate. The present rental market has several challenges that slows and make the process of renting rooms less efficient and unreliable. One of the notable problems is that people are using informal social media to meet their desired requirements such as renting and seeking rental services (Kyei et al., 2025) although, this may have helped some people to get the desired result, it lacks proper standardization and accuracy. Rentals are not well suited to work on social media groups and post on advertisements that are placed in Facebook groups or short TikTok videos these kinds of adverts are buried under the new ones, and it is nearly impossible to check if the room is still available or not. Trust and transparency are another significant barrier that arise. Inaccurate representation of accommodation is widely faced by the room seekers whereas property owners face dealing with unserious buyers, making the process rigorous (Hassan et al., 2021). Besides social media and other websites, people are often seen contacting locals, advertisement posters which are manual process, resulting in the availability uncertainty and wasting their time.
+ Furthermore, the trend of hiring a broker has been rapidly increasing in Nepalese rental market these brokers further complicate the situation by asking for a high commission usually worth a month or two of the rental money by both property owners and room seekers benefiting a lot more for its service. In addition to financial expenses, the use of broker creates delays and less transparency as both sides communicate via a middleman. Such experiences lead to hindering the overall rental process ecosystem. Nepal however has some existing digital platforms that lists vacant rooms and properties, but they are not entirely created with the rental market in mind. They do not have specific options such as real time availability status, detailed description, searching and filtering capabilities, reviews etc. Therefore, proving that the current landscape of rental market in Nepal having a structural gap with no dedicated, centralized digital space to serve the needs of room seekers and property owners.
+1.3	Rationale
+The reason for undertaking this project is that there is an evident and urgent need for a dedicated solution to drive the rental market challenges with technology. For the property owner RoomConnect will simplify the process of room listings and find suitable tenants whereas for the room seekers, the platform will make it easier and faster to find suitable accommodation through location based and cost filters. One of the factors for choosing this project is also that most of the industries are moving towards digitalization and as Nepal’s market is also moving to online channels, platform such as RoomConnect is likely to have benefit in the service industries.
+1.4	Aim
+The project aims to design and develop a web based online platform to effectively connect property owners and room seekers in the Nepalese urban rental sector.
+1.5	Objectives
+The objectives of undertaking this project are given below 
+•	To develop a platform that enables property owners to create, manage, update and delete rental property listings with descriptive information, that includes price, location, room size, pictures and availability status.
+•	To implement a comprehensive searching and filtering system in the platform that enables users to efficiently find a suitable room based on the seekers’ requirements.
+•	To develop a responsive user interface with consistent, accessible and user-friendly experience.
+•	To develop a web-based platform that allows role-based sign in such as; property owner and room seeker and admin.
+1.6	Scope
+The project scope outlines the scope of research, design and development activities to be carries out. The following lists in scope of RoomConnect:
+In Scope
+•	User management for three categories of users: property owners, room seekers and administrators.
+•	Development of a website application with a react and bootstrap user interface, Python and fast API backend and MySQL database.
+•	Implementation of property listing that enables property owners to smoothly list their available rooms, view, edit, update and delete it.
+•	The application will implement a search and filter module for room seekers, allowing them to filter by location, price, room type, and size.
+•	Design and development of an admin dashboard for managing users, data and daily operational activities.
+Out of scope
+•	There is no inclusion of real time payment gateways or online payment system in the application.
+•	There is no video or audio calling integration on the platform.
+•	It is not application specific to android or iOS, it is web application.
+1.7	Potential Benefits
+1.7.1 Tangible Benefits 
+Tangible Benefits in developing RoomConnect are listed below:
+Time Saving
+Room Seekers will be able to search for room easily without wandering around and hitting a dead end. They will be able to search for the perfect room according to their required specifications using filters and compare multiple options from anywhere and anytime, allowing them to save their precious time. Using RoomConnect they can quickly find potential room options without having to dedicate weeks of endless searching door to door.
+Cost Saving
+Brokers and Middleman make it easier for people to search for rooms; however, their service prices are quite high and unaffordable. RoomConnect reduces the need of brokers/ middleman to cut down on that cost for both property owners and room seekers. 
+Increased Occupancy
+Property owners will not face stress of having vacant rooms for long as our platform will display their property with a large potential tenant. By using RoomConnect, the property owners can list their vacant properties, that showcases their property well, thus reducing vacant period of their rooms and increase their occupancy rate.
+1.7.2 Intangible Benefits 
+Reduced Stress
+Both property owners and seekers will not have extra burden of not finding tenants or rooms due to the platforms accurate listing, searching and filtering capabilities. 
+Increased Trust
+The platform will have verified user accounts with verified identity. The properties listed will have clear images, descriptions, and prices that increase transparency between room seekers and property owners.
+Digital empowerment
+The platform will make the rental market more accessible to individuals with different levels of literacy that supports a wider potential user.
+Sustainable development
+RoomConnect’s impact on the accessibility and efficiency of rental housing in Nepal’s urban areas supports the UN SDG 11 that highlights including, safe and affordable housing for all. 
+1.8 Target Users
+The target users of RoomConnect are divided into three main categories: 
+Room Seekers: Room seekers are the people who are currently staying in a rental room or searching for a vacant room to rent. It could be students, working professionals and migrants who are actively searching for rentals in city area. These users interact with RoomConnect to view, search, filter, browse, save and inquire on the posted property listings.
+Property Owners: Property owners are the people who own housing and are willing to rent their vacant room, these users advertise and manage their available rental properties. Property owners interact with RoomConnect to create and manage detailed listings and respond to the inquiries from room seekers.
+Administrator: The administrators are responsible for managing and monitoring the overall operation of RoomConnect. These users manage user accounts, property listings, categories listing to ensure the accuracy, quality and appropriateness of the platform.
+1.9	Functionalities
+Administrators
+The functionalities of administrator in RoomConnect are:
+•	Log in to the administrative dashboard as an admin.
+•	View, manage, edit and update all the user accounts on the platform. 
+•	View, manage, and remove property listing
+•	Add, edit and update and remove property categories.
+Property Owners
+The functionalities of property owners in RoomConnect are:
+•	The property owners register and login aa a property owner.
+•	The property owners can create detail listings of their rooms including title, description, price, location, room type, size, pictures, amenities, house rules, and desired candidate. 
+•	These users can edit, update and delete their existing listing anytime.
+•	They can manage and respond to inquired received from room seekers.
+Room Seekers
+•	The Room Seekers can register and login as a regular user
+•	Room Seekers can view the user homepage with filled with vacant rooms
+•	They can browse available rooms, search for rooms using filters such as location, price range, room type, and size.
+•	They can view desired rental rooms in detail with images, pricing and other details posted by the property owners.
+•	Room Seekers can save preferred listing to a saved list, to go back to the page and not lose the liked property.
+•	They can write a review and rate the property 
+•	Room Seekers can send inquires to the property owners.
+
+
