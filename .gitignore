@@ -23,6 +23,7 @@ env/
 
 # Uploaded media
 media/
+!media/.gitkeep
 
 # Node
 node_modules/
